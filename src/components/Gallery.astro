@@ -1,0 +1,223 @@
+---
+const media = [
+  { type: 'img', src: '/images/img1.jpeg', alt: 'Wedding venue stage décor with lotus design and paper lanterns', label: 'Grand Wedding Setup' },
+  { type: 'img', src: '/images/img2.jpeg', alt: 'Welcome signboard at Menma event', label: 'Welcome Reception' },
+  { type: 'video', src: '/videos/IMG_2499.mp4', label: 'Stage D&eacute;cor' },
+  { type: 'video', src: '/videos/IMG_2506.mp4', label: 'Floral Setup' },
+  { type: 'video', src: '/videos/IMG_2508.mp4', label: 'Reception' },
+  { type: 'video', src: '/videos/IMG_2618.mp4', label: 'Wedding Feast' },
+  { type: 'video', src: '/videos/IMG_2621.mp4', label: 'Lighting Design' },
+  { type: 'video', src: '/videos/IMG_3519.mp4', label: 'Mandap Decoration' },
+];
+---
+
+<section class="gallery section-padding" id="gallery">
+  <div class="container">
+    <div class="gallery__header reveal">
+      <p class="section-script" style="color: var(--text-dark);">Our</p>
+      <h2 class="section-heading" style="margin-top: -0.5rem;">EVENTS</h2>
+    </div>
+
+    <div class="gallery__grid" id="gallery-grid">
+      {media.map((item, i) => (
+        <div class="gallery__card reveal">
+          {item.type === 'video' ? (
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              class="gallery__media"
+            >
+              <source src={item.src} type="video/mp4" />
+            </video>
+          ) : (
+            <img
+              src={item.src}
+              alt={item.alt}
+              class="gallery__media"
+              loading="lazy"
+            />
+          )}
+          <div class="gallery__overlay">
+            <span class="gallery__label" set:html={item.label}></span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="gallery__footer reveal">
+      <a
+        href="https://instagram.com/menma_catering_and_events_"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="gallery__instagram"
+      >
+        See More on Instagram &rarr;
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery {
+    background: var(--cream);
+  }
+
+  .gallery__header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .gallery__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .gallery__card {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .gallery__card.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .gallery__media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .gallery__card:hover .gallery__media {
+    transform: scale(1.06);
+  }
+
+  .gallery__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(61, 21, 21, 0.85) 0%,
+      rgba(61, 21, 21, 0.1) 50%,
+      transparent 100%
+    );
+    display: flex;
+    align-items: flex-end;
+    padding: 1.25rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .gallery__card:hover .gallery__overlay {
+    opacity: 1;
+  }
+
+  .gallery__label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--cream);
+    transform: translateY(8px);
+    transition: transform 0.4s ease;
+    letter-spacing: 0.03em;
+  }
+
+  .gallery__card:hover .gallery__label {
+    transform: translateY(0);
+  }
+
+  .gallery__footer {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+
+  .gallery__instagram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.85rem 2.5rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+
+  .gallery__instagram:hover {
+    background: var(--gold);
+    color: var(--text-dark);
+    transform: translateY(-2px);
+  }
+
+  @media (min-width: 576px) {
+    .gallery__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+
+    .gallery__card:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .gallery__card:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .gallery__card {
+      aspect-ratio: 4 / 3;
+    }
+
+    .gallery__card:first-child {
+      aspect-ratio: auto;
+    }
+
+    .gallery__overlay {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('gallery-grid');
+    if (!grid) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const cards = grid.querySelectorAll('.gallery__card');
+            cards.forEach((card, i) => {
+              setTimeout(() => card.classList.add('visible'), i * 80);
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(grid);
+  });
+</script>

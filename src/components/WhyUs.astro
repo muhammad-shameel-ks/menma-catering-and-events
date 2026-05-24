@@ -1,0 +1,114 @@
+<section class="why-us dark-section section-padding" id="why-us">
+  <div class="container">
+    <div class="why-us__header reveal">
+      <p class="why-us__script-top">Make your</p>
+      <h2 class="why-us__display">DREAM WEDDING</h2>
+      <p class="why-us__script-bottom">Come true</p>
+    </div>
+
+    <div class="why-us__grid">
+      <div class="why-us__feature reveal reveal-delay-1">
+        <div class="why-us__ornament">&#10038;</div>
+        <h3 class="why-us__feature-title">Innovative Themes</h3>
+        <p class="why-us__feature-text">
+          We craft unique, personalized concepts tailored to your vision.
+        </p>
+      </div>
+
+      <div class="why-us__feature reveal reveal-delay-2">
+        <div class="why-us__ornament">&#10038;</div>
+        <h3 class="why-us__feature-title">End-to-End Service</h3>
+        <p class="why-us__feature-text">
+          From venue booking to d&eacute;cor to catering &mdash; all under one roof.
+        </p>
+      </div>
+
+      <div class="why-us__feature reveal reveal-delay-3">
+        <div class="why-us__ornament">&#10038;</div>
+        <h3 class="why-us__feature-title">Exceptional Execution</h3>
+        <p class="why-us__feature-text">
+          Meticulous attention to every detail, every single time.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why-us__header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .why-us__script-top {
+    font-family: var(--font-script);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--gold);
+    margin-bottom: -0.5rem;
+  }
+
+  .why-us__display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: var(--cream);
+    line-height: 1.1;
+    letter-spacing: 0.08em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .why-us__script-bottom {
+    font-family: var(--font-script);
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--gold);
+    margin-top: -0.5rem;
+  }
+
+  .why-us__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .why-us__feature {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .why-us__feature:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+
+  .why-us__ornament {
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .why-us__feature-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .why-us__feature-text {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 0.925rem;
+    color: var(--cream);
+    opacity: 0.8;
+    line-height: 1.7;
+  }
+
+  @media (min-width: 768px) {
+    .why-us__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+  }
+</style>

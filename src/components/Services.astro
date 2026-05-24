@@ -1,0 +1,324 @@
+---
+const serviceCategories = [
+  {
+    id: 'planning',
+    name: 'Event Planning & Coordination',
+    services: [
+      { title: 'Catering & Events', desc: 'Exquisite cuisine and seamless event management for every occasion.' },
+      { title: 'Corporate Events', desc: 'Professional events that impress clients and inspire teams.' },
+      { title: 'Birthday Parties', desc: 'Joyful celebrations tailored to every age and style.' },
+      { title: 'Haldi', desc: 'Traditional Haldi ceremonies with vibrant décor and rituals.' },
+      { title: 'Arabic Night', desc: 'Luxurious Arabian-themed events with authentic touches.' },
+      { title: 'DJ Party', desc: 'High-energy music and entertainment for unforgettable nights.' },
+    ],
+  },
+  {
+    id: 'decor',
+    name: 'Décor & Design',
+    services: [
+      { title: 'Stage Decoration', desc: 'Stunning stage designs that captivate and delight.' },
+      { title: 'Flower Arrangements', desc: 'Elegant floral artistry for every setting and style.' },
+      { title: 'Panthal & Tent', desc: 'Beautifully crafted pandals and tent structures.' },
+      { title: 'Invitation Cards', desc: 'Custom-designed invitations that set the perfect tone.' },
+    ],
+  },
+  {
+    id: 'venue',
+    name: 'Venue & Logistics',
+    services: [
+      { title: 'Venue Booking', desc: 'Prime venues across Palakkad for events of all sizes.' },
+      { title: 'Travels & Accommodation', desc: 'Hassle-free travel and stay arrangements for guests.' },
+    ],
+  },
+  {
+    id: 'media',
+    name: 'Media & Beauty',
+    services: [
+      { title: 'Live Video & LED', desc: 'Professional live streaming and LED display setups.' },
+      { title: 'Photography & Video', desc: 'Cinematic coverage that captures every precious moment.' },
+      { title: 'Beautician', desc: 'Expert bridal and event makeup services.' },
+    ],
+  },
+  {
+    id: 'hospitality',
+    name: 'Guest Services',
+    services: [
+      { title: 'Garlands', desc: 'Traditional and modern garlands for all ceremonies.' },
+      { title: 'Welcome Girls', desc: 'Graceful hospitality with trained welcome professionals.' },
+      { title: 'Security', desc: 'Reliable security for safe and smooth events.' },
+      { title: 'Entertainment', desc: 'Live performances, artists, and entertainment for all occasions.' },
+    ],
+  },
+];
+---
+
+<section class="services section-padding" id="services">
+  <div class="container">
+    <div class="services__header reveal">
+      <p class="section-script" style="color: var(--text-dark);">What We</p>
+      <h2 class="section-heading" style="margin-top: -0.5rem;">OFFER</h2>
+      <div class="services__underline"></div>
+    </div>
+
+    <div class="services__accordion reveal" id="services-accordion">
+      {serviceCategories.map((cat, idx) => (
+        <div class="accordion__item">
+          <button
+            class="accordion__header"
+            aria-expanded={idx === 0 ? 'true' : 'false'}
+            data-accordion-trigger
+          >
+            <span class="accordion__title">{cat.name}</span>
+            <span class="accordion__icon" aria-hidden="true"></span>
+          </button>
+          <div
+            class="accordion__body"
+            style={idx === 0 ? 'max-height: 600px;' : ''}
+          >
+            <div class="accordion__content">
+              {cat.services.map((svc) => (
+                <div class="accordion__service">
+                  <span class="accordion__bullet">&#9670;</span>
+                  <div class="accordion__service-text">
+                    <h4 class="accordion__service-title">{svc.title}</h4>
+                    <p class="accordion__service-desc">{svc.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const accordion = document.getElementById('services-accordion');
+    if (!accordion) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            accordion.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(accordion);
+
+    accordion.querySelectorAll('[data-accordion-trigger]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.parentElement;
+        const body = item.querySelector('.accordion__body');
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+
+        if (isOpen) {
+          trigger.setAttribute('aria-expanded', 'false');
+          body.style.maxHeight = '0';
+          item.classList.remove('is-open');
+        } else {
+          trigger.setAttribute('aria-expanded', 'true');
+          body.style.maxHeight = body.scrollHeight + 'px';
+          item.classList.add('is-open');
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .services {
+    background: var(--ivory);
+    position: relative;
+  }
+
+  .services::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 25 L55 25 L38 35 L43 55 L30 42 L17 55 L22 35 L5 25 L25 25 Z' fill='%23D4AF37' opacity='0.03'/%3E%3C/svg%3E");
+    background-size: 120px auto;
+    pointer-events: none;
+  }
+
+  .services__header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .services__underline {
+    width: 80px;
+    height: 2px;
+    background: var(--gold);
+    margin: 1rem auto 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .services__underline::before {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gold-light);
+    animation: shimmer 2s ease-in-out infinite;
+  }
+
+  .services__accordion {
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .services__accordion.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .accordion__item {
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .accordion__item:first-child {
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .accordion__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.25rem 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font: inherit;
+    text-align: left;
+    color: inherit;
+    transition: padding 0.3s ease;
+    min-height: 48px;
+  }
+
+  .accordion__header:hover {
+    padding-left: 0.5rem;
+  }
+
+  .accordion__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    color: var(--text-dark);
+    letter-spacing: 0.03em;
+    padding-right: 1rem;
+  }
+
+  .accordion__icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: transform 0.4s ease;
+  }
+
+  .accordion__icon::before,
+  .accordion__icon::after {
+    content: '';
+    position: absolute;
+    background: var(--gold);
+    border-radius: 1px;
+    transition: transform 0.4s ease;
+  }
+
+  .accordion__icon::before {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: translateY(-50%);
+  }
+
+  .accordion__icon::after {
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    transform: translateX(-50%);
+  }
+
+  .accordion__item.is-open .accordion__icon::after {
+    transform: translateX(-50%) rotate(90deg);
+  }
+
+  .accordion__body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+
+  .accordion__content {
+    padding: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .accordion__service {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .accordion__bullet {
+    color: var(--gold);
+    font-size: 0.45rem;
+    margin-top: 0.55rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .accordion__service-text {
+    flex: 1;
+  }
+
+  .accordion__service-title {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 0.2rem;
+  }
+
+  .accordion__service-desc {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: var(--brown-mid);
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+
+  @media (min-width: 768px) {
+    .accordion__header {
+      padding: 1.5rem 0;
+    }
+
+    .accordion__header:hover {
+      padding-left: 1rem;
+    }
+
+    .accordion__content {
+      padding: 0 0 2rem;
+      gap: 1.25rem;
+    }
+  }
+</style>

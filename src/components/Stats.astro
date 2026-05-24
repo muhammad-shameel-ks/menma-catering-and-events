@@ -1,0 +1,117 @@
+<section class="stats dark-section section-padding" id="stats">
+  <div class="container">
+    <div class="stats__grid">
+      <div class="stats__item reveal reveal-delay-1">
+        <span class="stats__number" data-target="500" data-suffix="+">0</span>
+        <span class="stats__label">Events Executed</span>
+      </div>
+      <div class="stats__item reveal reveal-delay-2">
+        <span class="stats__number" data-target="10" data-suffix="+">0</span>
+        <span class="stats__label">Years of Experience</span>
+      </div>
+      <div class="stats__item reveal reveal-delay-3">
+        <span class="stats__number" data-target="1000" data-suffix="+">0</span>
+        <span class="stats__label">Happy Families</span>
+      </div>
+      <div class="stats__item reveal reveal-delay-4">
+        <span class="stats__number" data-target="20" data-suffix="+">0</span>
+        <span class="stats__label">Services Offered</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const counters = document.querySelectorAll('.stats__number');
+
+    const animateCounters = () => {
+      counters.forEach((counter) => {
+        const target = parseInt(counter.dataset.target, 10);
+        const suffix = counter.dataset.suffix || '';
+        const duration = 2000;
+        const step = Math.max(1, Math.floor(target / 60));
+        let current = 0;
+
+        const update = () => {
+          current += step;
+          if (current >= target) {
+            counter.textContent = target.toLocaleString() + suffix;
+            return;
+          }
+          counter.textContent = current.toLocaleString() + suffix;
+          requestAnimationFrame(update);
+        };
+
+        update();
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCounters();
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const grid = document.querySelector('.stats__grid');
+    if (grid) observer.observe(grid);
+  });
+</script>
+
+<style>
+  .stats__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .stats__item {
+    position: relative;
+    padding: 1.5rem 0;
+  }
+
+  .stats__number {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
+
+  .stats__label {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    color: var(--cream);
+    opacity: 0.85;
+    letter-spacing: 0.05em;
+  }
+
+  @media (min-width: 768px) {
+    .stats__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .stats__item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 60%;
+      background: var(--gold);
+      opacity: 0.3;
+    }
+  }
+</style>

@@ -1,0 +1,335 @@
+<section class="hero" id="home">
+  <video
+    autoplay
+    muted
+    playsinline
+    preload="metadata"
+    poster="/images/img1.jpeg"
+    fetchpriority="high"
+    class="hero__video"
+    id="hero-video"
+  >
+    <source src="/videos/hero.mp4" type="video/mp4" />
+  </video>
+
+  <video muted preload="auto" class="hero__video hero__video--next" id="hero-video-next"></video>
+
+  <div class="hero__overlay"></div>
+
+  <div class="hero__content">
+    <div class="hero__top">
+      <div class="hero__welcome hero-anim">Welcome to</div>
+
+      <img src="/images/logo.png" alt="Menma" class="hero__logo hero-anim" width="80" height="80" />
+
+      <h1 class="hero__title hero-anim">MENMA</h1>
+
+      <p class="hero__subtitle hero-anim">Catering &amp; Events</p>
+
+      <div class="hero__divider hero-anim">
+        <span class="hero__divider-line"></span>
+        <span class="hero__divider-diamond">&#9670;</span>
+        <span class="hero__divider-line"></span>
+      </div>
+
+      <p class="hero__tagline hero-anim">&ldquo;Life is an event. Make it memorable.&rdquo;</p>
+    </div>
+
+    <div class="hero__ctas hero-anim">
+      <a href="#services" class="hero__cta hero__cta--outline">Explore Our Services</a>
+      <a href="#contact" class="hero__cta hero__cta--solid">Book a Consultation</a>
+    </div>
+  </div>
+
+</section>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const playlist = [
+      '/videos/hero.mp4',
+      '/videos/IMG_2499.mp4',
+      '/videos/IMG_2506.mp4',
+      '/videos/IMG_2508.mp4',
+      '/videos/IMG_2618.mp4',
+      '/videos/IMG_2621.mp4',
+      '/videos/IMG_3519.mp4',
+      '/videos/IMG_3626.mp4',
+    ];
+
+    const v1 = document.getElementById('hero-video');
+    const v2 = document.getElementById('hero-video-next');
+    const SEGMENT = 10;
+    let current = 0;
+    let active = v1;
+    let buffer = v2;
+    let busy = false;
+
+    function preload(idx) {
+      buffer.src = playlist[(current + 1) % playlist.length];
+      buffer.load();
+    }
+
+    function advance() {
+      if (busy) return;
+      busy = true;
+
+      const nextIdx = (current + 1) % playlist.length;
+      buffer.src = playlist[nextIdx];
+      buffer.load();
+
+      const onCanPlay = () => {
+        buffer.removeEventListener('canplaythrough', onCanPlay);
+
+        active.style.opacity = '0';
+        buffer.style.opacity = '1';
+
+        buffer.currentTime = 0;
+        buffer.play();
+
+        const tmp = active;
+        active = buffer;
+        buffer = tmp;
+
+        current = nextIdx;
+        active.style.pointerEvents = 'auto';
+        buffer.style.pointerEvents = 'none';
+
+        preload(current);
+
+        setTimeout(() => { busy = false; }, 600);
+      };
+
+      if (buffer.readyState >= 3) {
+        onCanPlay();
+      } else {
+        buffer.addEventListener('canplaythrough', onCanPlay, { once: true });
+      }
+    }
+
+    preload(0);
+
+    active.addEventListener('timeupdate', () => {
+      if (active.currentTime >= SEGMENT && !busy) {
+        advance();
+      }
+    });
+
+    active.addEventListener('ended', advance);
+  });
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+    background: url('/images/img1.jpeg') center / cover no-repeat;
+  }
+
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: opacity 0.5s ease;
+  }
+
+  .hero__video--next {
+    opacity: 0;
+    z-index: 0;
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(61, 21, 21, 0.92) 0%,
+      rgba(61, 21, 21, 0.6) 30%,
+      rgba(61, 21, 21, 0.3) 70%,
+      rgba(61, 21, 21, 0.1) 100%
+    );
+    z-index: 1;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 6vh 1.5rem 2rem;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .hero__logo {
+    width: 80px;
+    height: auto;
+    margin: 0 auto 0.5rem;
+  }
+
+  .hero__welcome {
+    font-family: var(--font-script);
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(4rem, 14vw, 10rem);
+    color: var(--cream);
+    letter-spacing: 0.15em;
+    line-height: 1;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero__subtitle {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: clamp(0.9rem, 3vw, 1.4rem);
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+
+  .hero__divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1.5rem auto;
+    max-width: 200px;
+  }
+
+  .hero__divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero__divider-diamond {
+    color: var(--gold);
+    font-size: 0.6rem;
+  }
+
+  .hero__tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    color: var(--cream);
+    opacity: 0.9;
+    margin-bottom: 2rem;
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.85rem 2rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .hero__cta--outline {
+    border: 1px solid var(--gold);
+    color: var(--cream);
+    background: transparent;
+  }
+
+  .hero__cta--outline:hover {
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .hero__cta--solid {
+    background: var(--gold);
+    color: var(--text-dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero__cta--solid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .hero__cta--solid:hover::before {
+    left: 100%;
+  }
+
+  .hero__cta--solid:hover {
+    transform: translateY(-2px);
+  }
+
+  .hero-anim {
+    opacity: 0;
+  }
+
+  .hero__logo { animation: fadeInDown 0.8s ease 0.2s forwards; }
+  .hero__title { animation: fadeInUp 1s ease 0.5s forwards; }
+  .hero__subtitle { animation: fadeIn 0.8s ease 0.9s forwards; }
+  .hero__divider { animation: scaleIn 0.6s ease 1.1s forwards; }
+  .hero__tagline { animation: fadeIn 0.8s ease 1.3s forwards; }
+  .hero__ctas { animation: fadeInUp 0.8s ease 1.5s forwards; }
+
+  @media (min-width: 768px) {
+    .hero {
+      align-items: center;
+    }
+
+    .hero__content {
+      padding: 0 2rem 4rem;
+      height: auto;
+    }
+
+    .hero__top {
+      margin-bottom: 1rem;
+    }
+
+    .hero__logo {
+      width: 100px;
+    }
+
+    .hero__ctas {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .hero__cta {
+      max-width: none;
+    }
+  }
+</style>

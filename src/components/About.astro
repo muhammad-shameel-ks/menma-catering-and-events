@@ -1,0 +1,134 @@
+<section class="about section-padding" id="about">
+  <div class="container about__grid">
+    <div class="about__image-wrapper reveal reveal-delay-1">
+      <div class="about__frame">
+        <img
+          src="/images/img2.jpeg"
+          alt="Menma Catering & Events Welcome Board"
+          class="about__image"
+          loading="lazy"
+        />
+        <div class="about__corner about__corner--tl"></div>
+        <div class="about__corner about__corner--tr"></div>
+        <div class="about__corner about__corner--bl"></div>
+        <div class="about__corner about__corner--br"></div>
+      </div>
+    </div>
+
+    <div class="about__content reveal reveal-delay-2">
+      <p class="section-label">Our Story</p>
+      <p class="section-script">About</p>
+      <h2 class="section-heading" style="margin-bottom: 1.5rem;">
+        Menma Catering<br />&amp; Events
+      </h2>
+
+      <div class="gold-line"></div>
+
+      <p class="about__text">
+        We are a team of creative minds who live and breathe events who came together to form
+        Menma Catering &amp; Events. Our company stands out for its concepts, innovative themes
+        and exceptional execution of all projects we manage.
+      </p>
+
+      <blockquote class="about__quote">
+        <span class="about__quote-mark">&ldquo;</span>
+        We Create Beautiful, Innovative and Creative Luxury Events
+      </blockquote>
+
+      <p class="about__text">
+        Based in Palakkad, Kerala, we specialize in crafting unforgettable experiences — from
+        intimate gatherings to grand celebrations. Every event we touch becomes a story worth
+        telling, a memory worth cherishing.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    background: var(--cream);
+  }
+
+  .about__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .about__image-wrapper {
+    width: 100%;
+  }
+
+  .about__frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    transform: rotate(-1.5deg);
+    border: 2px solid var(--gold);
+  }
+
+  .about__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about__corner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: var(--gold);
+    border-style: solid;
+  }
+
+  .about__corner--tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+  .about__corner--tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+  .about__corner--bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+  .about__corner--br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+  .about__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .about__text {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--text-dark);
+    line-height: 1.8;
+    opacity: 0.85;
+  }
+
+  .about__quote {
+    position: relative;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: var(--brown-mid);
+    padding: 1rem 0 1rem 1.25rem;
+    margin: 1rem 0;
+    border-left: 3px solid var(--gold);
+    line-height: 1.5;
+  }
+
+  .about__quote-mark {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--gold);
+    line-height: 0;
+    position: relative;
+    top: 12px;
+    margin-right: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .about__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+</style>
