@@ -3,13 +3,13 @@
     autoplay
     muted
     playsinline
-    preload="metadata"
+    preload="auto"
     poster="/images/img1.jpeg"
     fetchpriority="high"
     class="hero__video"
     id="hero-video"
   >
-    <source src="/videos/hero.mp4" type="video/mp4" />
+    <source src="/videos/IMG_2499.mp4" type="video/mp4" />
   </video>
 
   <video muted preload="auto" class="hero__video hero__video--next" id="hero-video-next"></video>
@@ -46,7 +46,6 @@
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
     const playlist = [
-      '/videos/hero.mp4',
       '/videos/IMG_2499.mp4',
       '/videos/IMG_2506.mp4',
       '/videos/IMG_2508.mp4',
@@ -54,6 +53,7 @@
       '/videos/IMG_2621.mp4',
       '/videos/IMG_3519.mp4',
       '/videos/IMG_3626.mp4',
+      '/videos/hero.mp4',
     ];
 
     const v1 = document.getElementById('hero-video');

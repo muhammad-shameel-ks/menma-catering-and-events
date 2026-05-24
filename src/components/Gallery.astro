@@ -27,10 +27,11 @@ const media = [
               muted
               loop
               playsinline
-              preload="metadata"
+              preload="none"
               class="gallery__media"
+              data-src={item.src}
+              poster="/images/img1.jpeg"
             >
-              <source src={item.src} type="video/mp4" />
             </video>
           ) : (
             <img
@@ -204,20 +205,42 @@ const media = [
   document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('gallery-grid');
     if (!grid) return;
-    const observer = new IntersectionObserver(
+
+    const cards = grid.querySelectorAll('.gallery__card');
+
+    // Lazy-load videos when card is near viewport
+    const videoObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const cards = grid.querySelectorAll('.gallery__card');
+            const video = entry.target.querySelector('video');
+            if (video && video.dataset.src && !video.src) {
+              video.src = video.dataset.src;
+              video.load();
+            }
+            videoObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '200px' }
+    );
+
+    cards.forEach((card) => videoObserver.observe(card));
+
+    // Reveal animation when grid enters viewport
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
             cards.forEach((card, i) => {
               setTimeout(() => card.classList.add('visible'), i * 80);
             });
-            observer.unobserve(entry.target);
+            revealObserver.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.1 }
     );
-    observer.observe(grid);
+    revealObserver.observe(grid);
   });
 </script>
